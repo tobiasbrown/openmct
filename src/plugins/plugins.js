@@ -35,7 +35,7 @@ define([
     AutoflowPlugin,
     TimeConductorPlugin,
     ExampleImagery,
-    LADTable,
+    LADTable
 ) {
     var bundleMap = {
         CouchDB: 'platform/persistence/couch',
