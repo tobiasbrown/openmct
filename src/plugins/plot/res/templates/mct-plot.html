@@ -36,9 +36,19 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th ng-repeat="name in legend.get('valuesToShowWhenExpanded')"
-                            ng-class="{ 'mobile-hide': name.indexOf('nearest') != -1 }">
-                            {{ legend.get('niceValuesToShowWhenExpanded')[name] }}
+                        <th ng-if="legend.get('showTimestampWhenExpanded')">
+                            Timestamp
+                        </th>
+                        <th ng-if="legend.get('showValueWhenExpanded')">
+                            Value
+                        </th>
+                        <th ng-if="legend.get('showMinimumWhenExpanded')"
+                            class="mobile-hide">
+                            Min
+                        </th>
+                        <th ng-if="legend.get('showMaximumWhenExpanded')"
+                            class="mobile-hide">
+                            Max
                         </th>
                     </tr>
                 </thead>
@@ -49,15 +59,27 @@
                         </span>
                         <span class="plot-series-name">{{ series.get('name') }}</span>
                     </td>
-                    <td ng-repeat="name in legend.get('valuesToShowWhenExpanded')"
-                        ng-class="{ 'mobile-hide': name.indexOf('nearest') != -1 }">
-                        <span class="plot-series-value {{ (name.indexOf('nearest') != -1)? 'cursor-hover hover-value-enabled' : '' }}">
-                              {{ name === 'nearestValue' ?
-                            series.format(series.closest, yAxis.get('key')) :
-                            name === 'nearestTimestamp' ?
-                                 series.closest && series.format(series.closest, xAxis.get('key')) :
-                                 series.format(series.stats.get(yAxis.get('key'))[name], yAxis.get('key'));
-                        }}
+
+                    <td ng-if="legend.get('showTimestampWhenExpanded')">
+                        <span class="plot-series-value cursor-hover hover-value-enabled">
+                            {{ series.closest && series.format(series.closest, xAxis.get('key')) }}
+                        </span>
+                    </td>
+                    <td ng-if="legend.get('showValueWhenExpanded')">
+                        <span class="plot-series-value cursor-hover hover-value-enabled">
+                            {{ series.format(series.closest, yAxis.get('key')) }}
+                        </span>
+                    </td>
+                    <td ng-if="legend.get('showMinimumWhenExpanded')"
+                        class="mobile-hide">
+                        <span class="plot-series-value">
+                            {{ series.format(series.stats.get(yAxis.get('key')).min, yAxis.get('key')) }}
+                        </span>
+                    </td>
+                    <td ng-if="legend.get('showMaximumWhenExpanded')"
+                        class="mobile-hide">
+                        <span class="plot-series-value">
+                            {{ series.format(series.stats.get(yAxis.get('key')).max, yAxis.get('key')) }}
                         </span>
                     </td>
                 </tr>
