@@ -172,8 +172,10 @@ define([
         this.linkFields(config.legend, 'position', 'form.legend.position', undefined, undefined, 'configuration.legend.position');
         this.linkFields(config.legend, 'expandByDefault', 'form.legend.expandByDefault', Boolean, undefined, 'configuration.legend.expandByDefault');
         this.linkFields(config.legend, 'valueToShowWhenCollapsed', 'form.legend.valueToShowWhenCollapsed', undefined, undefined, 'configuration.legend.valueToShowWhenCollapsed');
-        this.linkFields(config.legend, 'valuesToShowWhenExpanded', 'form.legend.valuesToShowWhenExpanded', undefined, undefined, 'configuration.legend.valuesToShowWhenExpanded');
-        this.linkFields(config.legend, 'niceValuesToShowWhenExpanded', 'form.legend.niceValuesToShowWhenExpanded', undefined, undefined, 'configuration.legend.niceValuesToShowWhenExpanded');
+        this.linkFields(config.legend, 'showValueWhenExpanded', 'form.legend.showValueWhenExpanded', Boolean, undefined, 'configuration.legend.showValueWhenExpanded');
+        this.linkFields(config.legend, 'showTimestampWhenExpanded', 'form.legend.showTimestampWhenExpanded', Boolean, undefined, 'configuration.legend.showTimestampWhenExpanded');
+        this.linkFields(config.legend, 'showMaximumWhenExpanded', 'form.legend.showMaximumWhenExpanded', Boolean, undefined, 'configuration.legend.showMaximumWhenExpanded');
+        this.linkFields(config.legend, 'showMinimumWhenExpanded', 'form.legend.showMinimumWhenExpanded', Boolean, undefined, 'configuration.legend.showMinimumWhenExpanded');
     };
 
     PlotOptionsController.prototype.addSeries = function (series, index) {

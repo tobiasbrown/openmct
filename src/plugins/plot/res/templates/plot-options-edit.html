@@ -190,10 +190,34 @@
             <li class="controls-under">
                 <ul>
                     <li><label>Show when expanded:</label></li>
-                    <li class="controls-first"><label>Nearest Timestamp</label><span class="control"><input type="checkbox" value="nearestTimestamp" ng-model="form.legend.valuesToShowWhenExpanded"/></span></li>
-                    <li class="controls-first"><label>Nearest Value</label><span class="control"><input type="checkbox" value="nearestTimestamp" ng-model="form.legend.valuesToShowWhenExpanded"/></span></li>
-                    <li class="controls-first"><label>Minimum</label><span class="control"><input type="checkbox" value="nearestTimestamp" ng-model="form.legend.valuesToShowWhenExpanded"/></span></li>
-                    <li class="controls-first"><label>Maximum</label><span class="control"><input type="checkbox" value="nearestTimestamp" ng-model="form.legend.valuesToShowWhenExpanded"/></span></li>
+                    <li class="controls-first">
+                      <label>Nearest Timestamp</label>
+                      <span class="control">
+                        <input type="checkbox"
+                          ng-model="form.legend.showTimestampWhenExpanded"/>
+                      </span>
+                    </li>
+                    <li class="controls-first">
+                      <label>Nearest Value</label>
+                      <span class="control">
+                        <input type="checkbox"
+                               ng-model="form.legend.showValueWhenExpanded"/>
+                      </span>
+                    </li>
+                    <li class="controls-first">
+                      <label>Minimum</label>
+                      <span class="control">
+                        <input type="checkbox"
+                               ng-model="form.legend.showMinimumWhenExpanded"/>
+                      </span>
+                    </li>
+                    <li class="controls-first">
+                      <label>Maximum</label>
+                      <span class="control">
+                        <input type="checkbox"
+                               ng-model="form.legend.showMaximumWhenExpanded"/>
+                      </span>
+                    </li>
                 </ul>
             </li>
         </ul>

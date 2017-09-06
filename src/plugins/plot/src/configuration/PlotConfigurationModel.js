@@ -98,8 +98,10 @@ define([
                     position: 'top',
                     expandByDefault: false,
                     valueToShowWhenCollapsed: 'nearestValue',
-                    valuesToShowWhenExpanded: ['nearestTimestamp', 'nearestValue', 'min', 'max'],
-                    niceValuesToShowWhenExpanded: { none: 'None', nearestTimestamp: 'Timestamp', nearestValue: 'Value', min: 'Min', max: 'Max'}
+                    showTimestampWhenExpanded: true,
+                    showValueWhenExpanded: true,
+                    showMaximumWhenExpanded: true,
+                    showMinimumWhenExpanded: true
                 }
             };
         },

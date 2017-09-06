@@ -112,12 +112,17 @@
              </div>
              <div class="inspector-properties">
                  <div class="label">Show when collapsed:</div>
-                 <div class="value">{{ config.legend.get('niceValuesToShowWhenExpanded')[config.legend.get('valueToShowWhenCollapsed')] }}</div>
+                 <div class="value">{{
+                   config.legend.get('valueToShowWhenCollapsed').replace('nearest', '')
+                 }}</div>
              </div>
              <div class="inspector-properties">
                  <div class="label">Show when expanded:</div>
                  <div class="value comma-list">
-                     <span ng-repeat="name in config.legend.get('valuesToShowWhenExpanded')">{{ config.legend.get('niceValuesToShowWhenExpanded')[name] }}</span>
+                     <span ng-if="config.legend.get('showTimestampWhenExpanded')">Timestamp</span>
+                     <span ng-if="config.legend.get('showValueWhenExpanded')">Value</span>
+                     <span ng-if="config.legend.get('showMinimumWhenExpanded')">Min</span>
+                     <span ng-if="config.legend.get('showMaximumWhenExpanded')">Max</span>
                  </div>
              </div>
          </li>
