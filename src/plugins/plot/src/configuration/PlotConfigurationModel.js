@@ -65,9 +65,7 @@ define([
                 this.yAxis.set('range', this.yAxis.get('range'));
             }
             this.listenTo(this, 'destroy', this.onDestroy, this);
-            if (this.legend.get('expandByDefault')) {
-                this.legend.set('expanded', true);
-            }
+            this.legend.set('expanded', this.legend.get('expandByDefault'));
             this.listenTo(this.legend, 'change:expanded', this.setLegendHeight, this);
             this.setLegendHeight();
         },
