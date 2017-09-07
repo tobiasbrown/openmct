@@ -408,7 +408,6 @@ define([
         if (isTick && !this.synchronized()) {
             return;
         }
-        this.config.yAxis.set('displayRange', this.config.yAxis.get('range'));
         this.config.xAxis.set('range', newRange);
         if (!isTick) {
             this.loadMoreData(newRange, true);
