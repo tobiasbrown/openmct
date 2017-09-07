@@ -208,6 +208,7 @@ define([
                 color: [1, 1, 1, 0.5]
             };
             this.$scope.rectangles.push(this.marquee);
+            this.trackHistory();
         }
     };
 
@@ -222,7 +223,6 @@ define([
                 min: Math.min(this.marquee.start.y, this.marquee.end.y),
                 max: Math.max(this.marquee.start.y, this.marquee.end.y)
             });
-            this.trackHistory();
             this.$scope.$emit('user:viewport:change:end');
         }
         this.$scope.rectangles = [];
@@ -236,6 +236,7 @@ define([
             start: this.positionOverPlot
         };
         $event.preventDefault();
+        this.trackHistory();
         return false;
     };
 
@@ -260,13 +261,13 @@ define([
     MCTPlotController.prototype.trackHistory = function () {
         this.plotHistory.push({
             x: this.config.xAxis.get('displayRange'),
-            y: this.config.yAxis.get('displayRange')
+            y: this.config.yAxis.get('displayRange'),
+            autoscale: this.config.yAxis.get('autoscale')
         });
     };
 
     MCTPlotController.prototype.endPan = function () {
         this.pan = undefined;
-        this.trackHistory();
         this.$scope.$emit('user:viewport:change:end');
     };
 
@@ -297,23 +298,18 @@ define([
     };
 
     MCTPlotController.prototype.clear = function () {
-        this.$scope.plotHistory = this.plotHistory = [];
-        this.config.xAxis.set('displayRange', this.config.xAxis.get('range'));
-        this.config.yAxis.set('autoscale', true);
+        this.$scope.plotHistory = this.plotHistory = this.plotHistory.slice(0, 1);
+        this.back();
         this.$scope.$emit('user:viewport:change:end');
     };
 
     MCTPlotController.prototype.back = function () {
-        var currentAxisRanges = this.plotHistory.pop(),
-            previousAxisRanges = this.plotHistory[this.plotHistory.length - 1];
+        var previousAxisRanges = this.plotHistory.pop();
 
-        if (previousAxisRanges) {
-            this.config.xAxis.set('displayRange', previousAxisRanges.x);
-            this.config.yAxis.set('displayRange', previousAxisRanges.y);
-            this.$scope.$emit('user:viewport:change:end');
-        } else {
-            this.clear();
-        }
+        this.config.xAxis.set('displayRange', previousAxisRanges.x);
+        this.config.yAxis.set('displayRange', previousAxisRanges.y);
+        this.config.yAxis.set('autoscale', previousAxisRanges.autoscale);
+        this.$scope.$emit('user:viewport:change:end');
     };
 
     MCTPlotController.prototype.stopWatching = function () {

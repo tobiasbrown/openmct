@@ -12,6 +12,7 @@ define([
     'use strict';
 
     var PlotConfigurationModel = Model.extend({
+
         initialize: function (model) {
             model = model || {};
             this.series = new Collection(model.series);
@@ -49,9 +50,7 @@ define([
             this.listenTo(this.series, 'remove', this.setLegendHeight, this);
 
             this.yAxis.on('change:autoscale', function (autoscale, oldValue, model) {
-                if (autoscale) {
-                    model.set('range', model.get('range'));
-                }
+                model.set('range', model.get('range')); // trigger autoscale
             });
             this.yAxis.on('change:autoscalePadding', function (padding, old, model) {
                 if (model.get('autoscale')) {
