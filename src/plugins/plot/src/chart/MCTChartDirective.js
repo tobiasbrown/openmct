@@ -11,6 +11,7 @@ define([
     'use strict';
 
     var TEMPLATE = "<canvas style='position: absolute; background: none; width: 100%; height: 100%;'></canvas>";
+    TEMPLATE += TEMPLATE;
 
     /**
      * MCTChart draws charts utilizing a drawAPI.
@@ -22,9 +23,10 @@ define([
             restrict: "E",
             template: TEMPLATE,
             link: function ($scope, $element, attrs, ctrl) {
-                var canvas = $element.find("canvas")[0];
+                var mainCanvas = $element.find("canvas")[1];
+                var overlayCanvas = $element.find("canvas")[0];
 
-                if (ctrl.initializeCanvas(canvas)) {
+                if (ctrl.initializeCanvas(mainCanvas, overlayCanvas)) {
                     ctrl.draw();
                 }
             },

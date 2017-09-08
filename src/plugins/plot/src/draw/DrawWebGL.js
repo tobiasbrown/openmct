@@ -30,10 +30,16 @@ function () {
      * @param {CanvasElement} canvas the canvas object to render upon
      * @throws {Error} an error is thrown if WebGL is unavailable.
      */
-    function DrawWebGL(canvas) {
+    function DrawWebGL(canvas, overlay) {
         this.canvas = canvas;
         this.gl = this.canvas.getContext("webgl", { preserveDrawingBuffer: true }) ||
             this.canvas.getContext("experimental-webgl", { preserveDrawingBuffer: true });
+
+        this.overlay = overlay;
+        this.c2d = overlay.getContext('2d');
+        if (!this.c2d) {
+            throw new Error("No canvas 2d!");
+        }
 
         // Ensure a context was actually available before proceeding
         if (!this.gl) {
@@ -76,6 +82,17 @@ function () {
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
     }
 
+    // Convert from logical to physical x coordinates
+    DrawWebGL.prototype.x = function (v) {
+        return Math.floor(((v - this.origin[0]) / this.dimensions[0]) * this.width);
+    };
+
+    // Convert from logical to physical y coordinates
+    DrawWebGL.prototype.y = function (v) {
+        return Math.floor(this.height -
+            ((v - this.origin[1]) / this.dimensions[1]) * this.height);
+    };
+
     DrawWebGL.prototype.doDraw = function (drawType, buf, color, points) {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, buf, this.gl.DYNAMIC_DRAW);
@@ -85,8 +102,10 @@ function () {
     };
 
     DrawWebGL.prototype.clear = function () {
-        this.canvas.height = this.canvas.offsetHeight;
-        this.canvas.width = this.canvas.offsetWidth;
+        this.height = this.canvas.height = this.canvas.offsetHeight;
+        this.width = this.canvas.width = this.canvas.offsetWidth;
+        this.overlay.height = this.overlay.offsetHeight;
+        this.overlay.width = this.overlay.offsetWidth;
         // Set the viewport size; note that we use the width/height
         // that our WebGL context reports, which may be lower
         // resolution than the canvas we requested.
@@ -107,6 +126,8 @@ function () {
      *        origin of the chart
      */
     DrawWebGL.prototype.setDimensions = function (dimensions, origin) {
+        this.dimensions = dimensions;
+        this.origin = origin;
         if (dimensions && dimensions.length > 0 &&
                 origin && origin.length > 0) {
             this.gl.uniform2fv(this.uDimensions, dimensions);
@@ -151,6 +172,32 @@ function () {
             min.concat([min[0], max[1]]).concat(max).concat([max[0], min[1]])
         ), color, 4);
     };
+
+    DrawWebGL.prototype.drawLimitPoint = function (x, y, size) {
+        this.c2d.fillRect(x + size, y, size, size);
+        this.c2d.fillRect(x, y + size, size, size);
+        this.c2d.fillRect(x - size, y, size, size);
+        this.c2d.fillRect(x, y - size, size, size);
+    };
+
+    DrawWebGL.prototype.drawLimitPoints = function (points, color, pointSize) {
+        var limitSize = pointSize * 2;
+        var offset = limitSize / 2;
+
+        var mappedColor = color.map(function (c, i) {
+            return i < 3 ? Math.floor(c * 255) : (c);
+        }).join(',');
+        this.c2d.strokeStyle = "rgba(" + mappedColor + ")";
+        this.c2d.fillStyle = "rgba(" + mappedColor + ")";
+
+        for (var i = 0; i < points.length; i++) {
+            this.drawLimitPoint(
+                this.x(points[i].x) - offset,
+                this.y(points[i].y) - offset,
+                limitSize
+            );
+        }
+    }
 
     return DrawWebGL;
 });

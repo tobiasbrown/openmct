@@ -257,6 +257,7 @@ define([
                 return;
             }
             this.updateStats(point);
+            point._limit = this.evaluate(point);
             this.data.splice(insertIndex, 0, point);
             this.emit('add', point, insertIndex, this);
         },

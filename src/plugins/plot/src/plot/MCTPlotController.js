@@ -128,7 +128,7 @@ define([
     };
 
     MCTPlotController.prototype.trackChartElementBounds = function ($event) {
-        if ($event.target === this.$canvas[0]) {
+        if ($event.target === this.$canvas[1]) {
             this.chartElementBounds = $event.target.getBoundingClientRect();
         }
     };

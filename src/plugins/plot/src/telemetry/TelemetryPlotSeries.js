@@ -58,7 +58,6 @@ define([
          */
         addPoints: function (points) {
             points.forEach(function (point) {
-                point._limit = this.evaluate(point);
                 this.add(point);
             }, this);
         }

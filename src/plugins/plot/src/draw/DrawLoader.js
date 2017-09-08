@@ -32,7 +32,7 @@ define(
              * @param {CanvasElement} canvas - The canvas eelement to attach
                       the draw API to.
              */
-            getDrawAPI: function (canvas) {
+            getDrawAPI: function (canvas, overlay) {
                 var api;
 
                 CHARTS.forEach(function (CHART_TYPE) {
@@ -44,7 +44,7 @@ define(
                         return;
                     }
                     try {
-                        api = new CHART_TYPE.API(canvas);
+                        api = new CHART_TYPE.API(canvas, overlay);
                         CHART_TYPE.ALLOCATIONS.push(api);
                     } catch (e) {
                         console.warn([
