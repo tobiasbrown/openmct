@@ -85,11 +85,15 @@ define([
             }
             this.trackStats(newKey);
             this.untrackStats(oldKey);
-            if (this.get('metadata').value(newKey).format === 'enum') {
+            var valueMetadata = this.get('metadata').value(newKey);
+            if (valueMetadata.format === 'enum') {
                 this.set('interpolate', 'stepAfter');
             } else {
                 this.set('interpolate', 'linear');
             }
+            this.evaluate = function (datum) {
+                return this.limitEvaluator.evaluate(datum, valueMetadata);
+            }.bind(this);
         },
 
         /**

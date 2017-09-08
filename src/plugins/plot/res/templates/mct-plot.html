@@ -17,7 +17,7 @@
                     </span>
                     <span class="plot-series-name">{{ series.get('name') }}</span>
                 </div>
-                <div class="plot-series-value hover-value-enabled value-to-display-{{ legend.get('valueToShowWhenCollapsed') }}"
+                <div class="plot-series-value hover-value-enabled value-to-display-{{ legend.get('valueToShowWhenCollapsed') }} {{ series.closest._limit.cssClass }}"
                      ng-class="{ 'cursor-hover': (legend.get('valueToShowWhenCollapsed').indexOf('nearest') != -1) }"
                      ng-show="!!highlights.length && legend.get('valueToShowWhenCollapsed') !== 'none'">
                     {{ legend.get('valueToShowWhenCollapsed') === 'nearestValue' ?
@@ -66,7 +66,8 @@
                         </span>
                     </td>
                     <td ng-if="legend.get('showValueWhenExpanded')">
-                        <span class="plot-series-value cursor-hover hover-value-enabled">
+                        <span class="plot-series-value cursor-hover hover-value-enabled"
+                              ng-class="series.closest._limit.cssClass">
                             {{ series.format(series.closest, yAxis.get('key')) }}
                         </span>
                     </td>
