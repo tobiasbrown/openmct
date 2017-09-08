@@ -12,6 +12,7 @@ define([
     var TelemetryPlotSeries = PlotSeries.extend({
         initialize: function (model, publicAPI) {
             this.publicAPI = publicAPI;
+            this.limitEvaluator = publicAPI.telemetry.limitEvaluator(model.domainObject);
             this.on('destroy', this.onDestroy, this);
         },
 
@@ -56,7 +57,10 @@ define([
          *
          */
         addPoints: function (points) {
-            points.forEach(this.add, this);
+            points.forEach(function (point) {
+                point._limit = this.evaluate(point);
+                this.add(point);
+            }, this);
         }
 
     });
