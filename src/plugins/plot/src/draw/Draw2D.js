@@ -49,13 +49,13 @@ function () {
 
     // Convert from logical to physical x coordinates
     Draw2D.prototype.x = function (v) {
-        return Math.floor(((v - this.origin[0]) / this.dimensions[0]) * this.width);
+        return ((v - this.origin[0]) / this.dimensions[0]) * this.width;
     };
 
     // Convert from logical to physical y coordinates
     Draw2D.prototype.y = function (v) {
-        return Math.floor(this.height -
-            ((v - this.origin[1]) / this.dimensions[1]) * this.height);
+        return this.height -
+            ((v - this.origin[1]) / this.dimensions[1]) * this.height;
     };
 
     // Set the color to be used for drawing operations
@@ -85,7 +85,7 @@ function () {
         this.setColor(color);
 
         // Configure context to draw two-pixel-thick lines
-        this.c2d.lineWidth = 2;
+        this.c2d.lineWidth = 1;
 
         // Start a new path...
         if (buf.length > 1) {
