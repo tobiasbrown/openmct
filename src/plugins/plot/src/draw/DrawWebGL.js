@@ -84,13 +84,13 @@ function () {
 
     // Convert from logical to physical x coordinates
     DrawWebGL.prototype.x = function (v) {
-        return Math.floor(((v - this.origin[0]) / this.dimensions[0]) * this.width);
+        return ((v - this.origin[0]) / this.dimensions[0]) * this.width;
     };
 
     // Convert from logical to physical y coordinates
     DrawWebGL.prototype.y = function (v) {
-        return Math.floor(this.height -
-            ((v - this.origin[1]) / this.dimensions[1]) * this.height);
+        return this.height -
+            ((v - this.origin[1]) / this.dimensions[1]) * this.height;
     };
 
     DrawWebGL.prototype.doDraw = function (drawType, buf, color, points) {
