@@ -36,6 +36,7 @@ function (
         this.isDestroyed = false;
         this.lines = [];
         this.pointSets = [];
+        this.limitSets = [];
         this.offset = {};
         this.config = $scope.config;
         this.$scope.$on(
@@ -172,9 +173,10 @@ function (
         }.bind(this);
     };
 
-    MCTChartController.prototype.initializeCanvas = function (canvas) {
+    MCTChartController.prototype.initializeCanvas = function (canvas, overlay) {
         this.canvas = canvas;
-        this.drawAPI = DrawLoader.getDrawAPI(canvas);
+        this.overlay = overlay;
+        this.drawAPI = DrawLoader.getDrawAPI(canvas, overlay);
         return !!this.drawAPI;
     };
 
@@ -237,6 +239,21 @@ function (
             this.pointSets.push(pointSet);
         }
 
+        var limitSet = elements.limitSet = {
+            series: series,
+            points: []
+        };
+        this.limitSets.push(limitSet);
+
+        series.on('add', function (point) {
+            if (point._limit) {
+                limitSet.points.push({
+                    x: this.offset.xVal(point, series),
+                    y: this.offset.yVal(point, series)
+                });
+            }
+        }.bind(this));
+
         this.seriesElements.set(series, elements);
     };
 
@@ -294,6 +311,15 @@ function (
     MCTChartController.prototype.drawSeries = function () {
         this.lines.forEach(this.drawLine, this);
         this.pointSets.forEach(this.drawPoints, this);
+        this.limitSets.forEach(this.drawLimitPoints, this);
+    };
+
+    MCTChartController.prototype.drawLimitPoints = function (limitSet) {
+        this.drawAPI.drawLimitPoints(
+            limitSet.points,
+            limitSet.series.get('color').asRGBAArray(),
+            limitSet.series.get('markerSize')
+        );
     };
 
     MCTChartController.prototype.drawPoints = function (chartElement) {

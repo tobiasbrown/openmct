@@ -133,5 +133,28 @@ function () {
         }
     };
 
+    Draw2D.prototype.drawLimitPoint = function (x, y, size) {
+        this.c2d.fillRect(x + size, y, size, size);
+        this.c2d.fillRect(x, y + size, size, size);
+        this.c2d.fillRect(x - size, y, size, size);
+        this.c2d.fillRect(x, y - size, size, size);
+    };
+
+    Draw2D.prototype.drawLimitPoints = function (points, color, pointSize) {
+        var limitSize = pointSize * 2;
+        var offset = limitSize / 2;
+
+        this.setColor(color);
+
+        for (var i = 0; i < points.length; i++) {
+            this.drawLimitPoint(
+                this.x(points[i].x) - offset,
+                this.y(points[i].y) - offset,
+                limitSize
+            );
+        }
+    }
+
+
     return Draw2D;
 });
