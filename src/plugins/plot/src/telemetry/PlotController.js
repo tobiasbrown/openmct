@@ -438,7 +438,9 @@ define([
 
     PlotController.prototype.onUserViewportChangeStart = function () {
         this.yAutoscale = this.config.yAxis.get('autoscale');
+        var displayRange = this.config.yAxis.get('displayRange');
         this.config.yAxis.set('autoscale', false);
+        this.config.yAxis.set('displayRange', displayRange);
         this.synchronized(false);
     };
 
