@@ -7,6 +7,7 @@ define([
     './MCTChartLineLinear',
     './MCTChartLineStepAfter',
     './MCTChartPointSet',
+    './MCTChartAlarmPointSet',
     '../draw/DrawLoader',
     '../lib/eventHelpers',
     'lodash'
@@ -15,6 +16,7 @@ function (
     MCTChartLineLinear,
     MCTChartLineStepAfter,
     MCTChartPointSet,
+    MCTChartAlarmPointSet,
     DrawLoader,
     eventHelpers,
     _
@@ -36,7 +38,7 @@ function (
         this.isDestroyed = false;
         this.lines = [];
         this.pointSets = [];
-        this.limitSets = [];
+        this.alarmSets = [];
         this.offset = {};
         this.config = $scope.config;
         this.$scope.$on(
@@ -67,6 +69,7 @@ function (
         this.listenTo(series, 'reset', this.onSeriesReset, this);
         this.listenTo(series, 'change:interpolate', this.changeInterpolate, this);
         this.listenTo(series, 'change:markers', this.changeMarkers, this);
+        this.listenTo(series, 'change:alarmMarkers', this.changeAlarmMarkers, this);
         this.listenTo(series, 'change', this.scheduleDraw);
         this.listenTo(series, 'add', this.scheduleDraw);
         this.makeChartElement(series);
@@ -87,6 +90,21 @@ function (
         if (newLine) {
             elements.lines.push(newLine);
             this.lines.push(newLine);
+        }
+    };
+
+    MCTChartController.prototype.changeAlarmMarkers = function (mode, o, series) {
+        if (mode === o) {
+            return;
+        }
+        var elements = this.seriesElements.get(series);
+        if (elements.alarmSet) {
+            elements.alarmSet.destroy();
+            this.alarmSets.splice(this.alarmSets.indexOf(elements.alarmSet), 1);
+        }
+        elements.alarmSet = this.alarmPointSetForSeries(series);
+        if (elements.alarmSet) {
+            this.alarmSets.push(elements.alarmSet);
         }
     };
 
@@ -221,6 +239,16 @@ function (
         }
     };
 
+    MCTChartController.prototype.alarmPointSetForSeries = function (series) {
+        if (series.get('alarmMarkers')) {
+            return new MCTChartAlarmPointSet(
+                series,
+                this,
+                this.offset
+            );
+        }
+    };
+
     MCTChartController.prototype.makeChartElement = function (series) {
         var elements = {
             lines: [],
@@ -239,20 +267,10 @@ function (
             this.pointSets.push(pointSet);
         }
 
-        var limitSet = elements.limitSet = {
-            series: series,
-            points: []
-        };
-        this.limitSets.push(limitSet);
-
-        series.on('add', function (point) {
-            if (point._limit) {
-                limitSet.points.push({
-                    x: this.offset.xVal(point, series),
-                    y: this.offset.yVal(point, series)
-                });
-            }
-        }.bind(this));
+        elements.alarmSet = this.alarmPointSetForSeries(series);
+        if (elements.alarmSet) {
+            this.alarmSets.push(elements.alarmSet);
+        }
 
         this.seriesElements.set(series, elements);
     };
@@ -311,14 +329,14 @@ function (
     MCTChartController.prototype.drawSeries = function () {
         this.lines.forEach(this.drawLine, this);
         this.pointSets.forEach(this.drawPoints, this);
-        this.limitSets.forEach(this.drawLimitPoints, this);
+        this.alarmSets.forEach(this.drawAlarmPoints, this);
     };
 
-    MCTChartController.prototype.drawLimitPoints = function (limitSet) {
+    MCTChartController.prototype.drawAlarmPoints = function (alarmSet) {
         this.drawAPI.drawLimitPoints(
-            limitSet.points,
-            limitSet.series.get('color').asRGBAArray(),
-            limitSet.series.get('markerSize')
+            alarmSet.points,
+            alarmSet.series.get('color').asRGBAArray(),
+            alarmSet.series.get('markerSize')
         );
     };
 

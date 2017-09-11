@@ -203,6 +203,7 @@ define([
         this.linkFields(series, 'interpolate', path + 'interpolate', undefined, undefined, configPath + 'interpolate');
         this.linkFields(series, 'markers', path + 'markers', undefined, undefined, configPath + 'markers');
         this.linkFields(series, 'markerSize', path + 'markerSize', Number, undefined, configPath + 'markerSize');
+        this.linkFields(series, 'alarmMarkers', path + 'alarmMarkers', Boolean, undefined, configPath + 'alarmMarkers');
     };
 
     PlotOptionsController.prototype.removeSeries = function (series, index) {
