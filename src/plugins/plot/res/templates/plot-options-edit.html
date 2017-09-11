@@ -58,7 +58,11 @@
                             <label>Show Markers</label>
                             <span class="control"><input type="checkbox" ng-model="form.series[$index].markers"/></span>
                         </li>
-                        <li ng-show="form.series[$index].markers">
+                        <li class="controls-first">
+                            <label>Show Alarm Markers</label>
+                            <span class="control"><input type="checkbox" ng-model="form.series[$index].alarmMarkers"/></span>
+                        </li>
+                        <li ng-show="form.series[$index].markers || form.series[$index].alarmMarkers">
                             <label>Marker Size:</label>
                             <span class="control"><input class="sm" type="text" ng-model="form.series[$index].markerSize"/></span>
                         </li>

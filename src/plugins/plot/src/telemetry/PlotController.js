@@ -337,7 +337,8 @@ define([
             metadata: metadata,
             formats: this.openmct.telemetry.getFormatMap(metadata),
             markers: true,
-            markerSize: 2.0
+            markerSize: 2.0,
+            alarmMarkers: true
         };
 
         _.extend(seriesModel, seriesConfig);
