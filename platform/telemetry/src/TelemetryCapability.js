@@ -200,6 +200,9 @@ define(
                 },
                 getPointCount: function () {
                     return telemetry.length;
+                },
+                getData: function () {
+                    return telemetry;
                 }
             };
         }
