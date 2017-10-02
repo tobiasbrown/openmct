@@ -62,6 +62,9 @@ define(
                 );
                 mockTransactionService.commit.andReturn(fastPromise());
                 mockTransactionService.cancel.andReturn(fastPromise());
+                mockTransactionService.isActive = function () {
+                    return true;
+                };
 
                 mockStatusCapability = jasmine.createSpyObj(
                     "statusCapability",
