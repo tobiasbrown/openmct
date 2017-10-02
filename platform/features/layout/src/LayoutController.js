@@ -26,8 +26,14 @@
  * @namespace platform/features/layout
  */
 define(
-    ['./LayoutDrag'],
-    function (LayoutDrag) {
+    [
+        'lodash',
+        './LayoutDrag'
+    ],
+    function (
+        _,
+        LayoutDrag
+    ) {
 
         var DEFAULT_DIMENSIONS = [12, 8],
             DEFAULT_GRID_SIZE = [32, 32],
@@ -99,9 +105,19 @@ define(
                 e.preventDefault();
             }
 
+            // Deselects the object that is no longer in the composition.
+            function deselectRemovedObject(composition, previousComposition) {
+                if (composition !== previousComposition) {
+                    var removedId = _.difference(previousComposition, composition);
+                    if (removedId.length === 1 && removedId[0] === self.selectedId) {
+                        self.clearSelection();
+                    }
+                }
+            }
+
             //Will fetch fully contextualized composed objects, and populate
             // scope with them.
-            function refreshComposition() {
+            function refreshComposition(currentComposition, previousComposition) {
                 //Keep a track of how many composition callbacks have been made
                 var thisCount = ++callbackCount;
 
@@ -124,6 +140,8 @@ define(
                             self.select(null, self.droppedIdToSelectAfterRefresh);
                             delete self.droppedIdToSelectAfterRefresh;
                         }
+
+                        deselectRemovedObject(currentComposition, previousComposition);
                     }
                 });
             }
