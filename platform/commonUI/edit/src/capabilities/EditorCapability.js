@@ -107,6 +107,8 @@ define(
                     domainObject.getCapability("status").set("editing", false);
                     return domainObject;
                 });
+            } else {
+                return Promise;
             }
         };
 

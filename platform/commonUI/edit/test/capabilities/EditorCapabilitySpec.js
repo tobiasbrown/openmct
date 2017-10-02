@@ -155,6 +155,20 @@ define(
                 });
             });
 
+            describe("finish", function () {
+                beforeEach(function () {
+                    mockTransactionService.isActive = function () {
+                        return false;
+                    };
+                    capability.edit();
+                    capability.finish();
+                });
+
+                it("does not cancel transaction when transaction is not active", function () {
+                    expect(mockTransactionService.cancel).not.toHaveBeenCalled();
+                });
+            });
+
             describe("dirty", function () {
                 var model = {};
 
