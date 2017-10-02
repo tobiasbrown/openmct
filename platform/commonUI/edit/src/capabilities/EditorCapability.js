@@ -104,6 +104,8 @@ define(
             return this.transactionService.cancel().then(function () {
                 domainObject.getCapability("status").set("editing", false);
                 return domainObject;
+            }, function (reject) {
+                return;
             });
         };
 

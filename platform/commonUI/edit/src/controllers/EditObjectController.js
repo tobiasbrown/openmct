@@ -43,7 +43,7 @@ define(
                 editorCapability = navigatedObject &&
                     navigatedObject.getCapability("editor");
 
-            return editorCapability;
+            return editorCapability && editorCapability.finish();
         }
 
         /**

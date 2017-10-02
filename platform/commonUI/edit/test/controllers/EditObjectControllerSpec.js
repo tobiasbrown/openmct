@@ -121,6 +121,7 @@ define(
 
                 mockScope.$on.mostRecentCall.args[1]();
 
+                expect(mockEditorCapability.finish).toHaveBeenCalled();
                 expect(removeCheck).toHaveBeenCalled();
             });
 
