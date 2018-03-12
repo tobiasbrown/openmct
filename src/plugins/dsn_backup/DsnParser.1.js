@@ -81,7 +81,7 @@ define([
         // Build domain object for the dish's antenna
         antennaDomainObject = this.builder.buildAntennaDomainObject(key, dish);
         dishComposition.push(DsnUtils.serializeIdentifier(antennaDomainObject.identifier));
-        
+
         dish[key + '.downSignals'] = [];
         dish[key + '.upSignals'] = [];
         dish[key + '.targets'] = [];
@@ -134,7 +134,6 @@ define([
         dishDomainObject = this.builder.addComposition(dishDomainObject, dishComposition);
 
         this.dsn.stations[location][dishKey] = dishDomainObject;
-
         return dish;
     };
 
@@ -223,8 +222,6 @@ define([
 
         this.dsn.stations = sortedStations;
         this.dsn.domainObjects = this.builder.getDomainObjects();
-
-        console.log(this.dsn);
 
         return this.dsn;
     };
